@@ -35,6 +35,7 @@ themes=(
     "autumn" 
     "copper_patina" 
     "monochrome_blue"
+    "gulf"
 )
 
 for theme in "${themes[@]}"; do
