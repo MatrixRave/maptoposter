@@ -485,6 +485,7 @@ def create_poster(
     dist,
     output_file,
     output_format,
+    text_options,
     width=12,
     height=16,
     country_label=None,
@@ -492,7 +493,6 @@ def create_poster(
     display_city=None,
     display_country=None,
     fonts=None,
-    noText=False
 ):
     """
     Generate a complete map poster with roads, water, parks, and typography.
@@ -680,8 +680,8 @@ def create_poster(
             family="monospace", weight="bold", size=adjusted_font_size
         )
 
-    if noText == False:
-    # --- BOTTOM TEXT ---
+    if text_options == "keep_all":
+        # --- BOTTOM TEXT ---
         ax.text(
             0.5,
             0.14,
@@ -702,7 +702,7 @@ def create_poster(
             ha="center",
             fontproperties=font_sub,
             zorder=11,
-        )
+            )
 
         lat, lon = point
         coords = (
@@ -733,6 +733,102 @@ def create_poster(
             linewidth=1 * scale_factor,
             zorder=11,
         )
+    if text_options == "no_coords": 
+        ax.text(
+            0.5,
+            0.14,
+            spaced_city,
+            transform=ax.transAxes,
+            color=THEME["text"],
+            ha="center",
+            fontproperties=font_main_adjusted,
+            zorder=11,
+        )
+
+        ax.text(
+            0.5,
+            0.10,
+            display_country.upper(),
+            transform=ax.transAxes,
+            color=THEME["text"],
+            ha="center",
+            fontproperties=font_sub,
+            zorder=11,
+        )
+        
+        ax.plot(
+            [0.4, 0.6],
+            [0.125, 0.125],
+            transform=ax.transAxes,
+            color=THEME["text"],
+            linewidth=1 * scale_factor,
+            zorder=11,
+        )
+    if text_options == "no_country": 
+         # --- BOTTOM TEXT ---
+        ax.text(
+            0.5,
+            0.14,
+            spaced_city,
+            transform=ax.transAxes,
+            color=THEME["text"],
+            ha="center",
+            fontproperties=font_main_adjusted,
+            zorder=11,
+        )
+
+        lat, lon = point
+        coords = (
+            f"{lat:.4f}° N / {lon:.4f}° E"
+            if lat >= 0
+            else f"{abs(lat):.4f}° S / {lon:.4f}° E"
+        )
+        if lon < 0:
+            coords = coords.replace("E", "W")
+
+        ax.text(
+            0.5,
+            0.10,
+            coords,
+            transform=ax.transAxes,
+            color=THEME["text"],
+            alpha=0.7,
+            ha="center",
+            fontproperties=font_coords,
+            zorder=11,
+        )
+
+        ax.plot(
+            [0.4, 0.6],
+            [0.125, 0.125],
+            transform=ax.transAxes,
+            color=THEME["text"],
+            linewidth=1 * scale_factor,
+            zorder=11,
+        )
+    if text_options == "no_city_country":
+        lat, lon = point
+        coords = (
+            f"{lat:.4f}° N / {lon:.4f}° E"
+            if lat >= 0
+            else f"{abs(lat):.4f}° S / {lon:.4f}° E"
+        )
+        if lon < 0:
+            coords = coords.replace("E", "W")
+
+        ax.text(
+            0.5,
+            0.14,
+            coords,
+            transform=ax.transAxes,
+            color=THEME["text"],
+            alpha=0.7,
+            ha="center",
+            fontproperties=font_main_adjusted,
+            zorder=11,
+        )
+    if text_options == "clear_all": ()
+ 
 
     # --- ATTRIBUTION (bottom right) ---
     if FONTS:
@@ -821,7 +917,7 @@ Options:
   --all-themes      Generate posters for all themes
   --distance, -d    Map radius in meters (default: 18000)
   --list-themes     List all available themes
-  --no-text         Dont display city name, country and coordinates
+  --text-options    Enables user to decide if and which texts to print to poster
 
 Distance guide:
   4000-6000m   Small/dense cities (Venice, Amsterdam old center)
@@ -958,10 +1054,10 @@ Examples:
         help="Output format for the poster (default: png)",
     )
     parser.add_argument(
-        '--no-text',
-        type=bool,
-        default=False,
-        help='Dont display city name, country and coordinates at the bottom of the poster.'
+        '--text-options',
+        default="keep_all",
+        choices=["keep_all", "clear_all", "no_coords", "no_country", "no_city_country"],
+        help='Different options for texts displayed on the generated poster.'
     )
 
     args = parser.parse_args()
@@ -1039,13 +1135,13 @@ Examples:
                 args.distance,
                 output_file,
                 args.format,    
+                args.text_options,
                 args.width,
                 args.height,
                 country_label=args.country_label,
                 display_city=args.display_city,
                 display_country=args.display_country,
                 fonts=custom_fonts,
-                noText=args.no_text
             )
 
         print("\n" + "=" * 50)
