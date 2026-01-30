@@ -1,0 +1,15 @@
+{
+  "name": "Gulf Design",
+  "description": "Oriented on the gulf livery known from cars like the Ford GT40 ",
+  "bg": "#93dafe",
+  "text": "#ffffff",
+  "gradient_color": "#93dafe",
+  "water": "#192c76",
+  "parks": "#192c76",
+  "road_motorway": "#ff7403",
+  "road_primary": "#ff7403",
+  "road_secondary": "#ff7403",
+  "road_tertiary": "#ff7403",
+  "road_residential": "#ff7403",
+  "road_default": "#ff7403"
+}
