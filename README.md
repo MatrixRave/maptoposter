@@ -77,7 +77,23 @@ python create_map_poster.py --city <city> --country <country> [options]
 | **OPTIONAL:** `--list-themes` | | List all available themes | |
 | **OPTIONAL:** `--all-themes` | | Generate posters for all available themes | |
 | **OPTIONAL:** `--width` | `-W` | Image width in inches | 12 (max: 20) |
-| **OPTIONAL:** `--height` | `-H` | Image height in inches | 16 (max: 20) |
+| **OPTIONAL:** `--height` | `-H` | Image height in inches | 16 (max: 20) | |
+| **OPTIONAL:** `--text-options` | | Allows to control which texts are displayed on posters | keep_all |
+
+### Text options for posters 
+
+Different texts are displayed on the posters showcasing the city, the country and the coordinates
+of what is displayed. Control what is displayed: 
+
+Use the `--text-options`command with the following options to control displayed texts: 
+
+| Option | Description |
+|--------|-------------|
+| `keep_all` | Default command, displays city, country and coordinates on poster |
+| `clear_all` | Removes all texts from a poster |
+| `no_coords` |  Removes the coordinates from a poster |
+| `no_country` |  Removes the country name from a poster, moves up the coordinates |
+| `no_city_country` | Removes city and country name and the line between them |
 
 ### Multilingual Support - i18n
 
