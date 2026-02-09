@@ -13,10 +13,5 @@
   "road_tertiary": "#808080",
   "road_residential": "#505050",
   "road_default": "#808080",
-
-  "rail_heavy": "#D0D0D0",
-  "rail_light": "#A0A0A0",
-  "rail_special": "#707070",
-  "rail_service": "#404040",
-  "rail_default": "#606060"
+  "railway": "#FFFFFF"
 }

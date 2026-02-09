@@ -586,7 +586,6 @@ def create_poster(
             except Exception:
                 water_polys = water_polys.to_crs(g_proj.graph['crs'])
             water_polys.plot(ax=ax, facecolor=THEME['water'], edgecolor='none', zorder=0.5)
-
     if parks is not None and not parks.empty:
         # Filter to only polygon/multipolygon geometries to avoid point features showing as dots
         parks_polys = parks[parks.geometry.type.isin(["Polygon", "MultiPolygon"])]
@@ -597,11 +596,16 @@ def create_poster(
             except Exception:
                 parks_polys = parks_polys.to_crs(g_proj.graph['crs'])
             parks_polys.plot(ax=ax, facecolor=THEME['parks'], edgecolor='none', zorder=0.8)
-
+    if railways is not None and not railways.empty:
+        railway_polys = railways[railways.geometry.type.isin(["LineString", "MultiLineString"])]
+        if not railway_polys.empty: 
+            try:
+                railway_polys = ox.projection.project_gdf(railway_polys)
+            except Exception:
+                railway_polys = railway_polys.to_crs(g_proj.graph['crs'])
+            railway_polys.plot(ax=ax, color=THEME['railway'], linewidth=0.5, zorder=2.5)
     # Layer 2: Roads with hierarchy coloring
     print("Applying road hierarchy colors...")
-    if railways is not None and not railways.empty:
-        railways.plot(ax=ax, facecolor=THEME['railway'], edgecolor='none', zorder=1)
     edge_colors = get_edge_colors_by_type(g_proj)
     edge_widths = get_edge_widths_by_type(g_proj)
 
